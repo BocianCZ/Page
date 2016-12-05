@@ -3,6 +3,7 @@
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Page\Entities\Page;
 use Modules\Page\Http\Requests\CreatePageRequest;
+use Modules\Page\Http\Requests\TranslatePageRequest;
 use Modules\Page\Http\Requests\UpdatePageRequest;
 use Modules\Page\Repositories\PageRepository;
 use Modules\Page\Events\PageWasDeleted;
@@ -100,6 +101,29 @@ class PageController extends AdminBaseController
         $this->page->destroy($page);
 
         flash(trans('page::messages.page deleted'));
+
+        return redirect()->route('admin.page.page.index');
+    }
+
+    public function translate(Page $page, $language)
+    {
+        $this->assetPipeline->requireJs('ckeditor.js');
+        $defaultLanguage = app()->make('config')->get('app.locale');
+        $originalModel = $page->translate($defaultLanguage);
+
+        return view('page::admin.translate', compact('page', 'language', 'defaultLanguage', 'originalModel'));
+    }
+
+    public function updateTranslation(Page $page, $language, TranslatePageRequest $request)
+    {
+        foreach ($page->translatedAttributes as $attribute) {
+            if ($request->get($attribute) !== null) {
+                $page->translate($language)->$attribute = $request->get($attribute);
+            }
+        }
+        $page->save();
+
+        flash(trans('page::messages.page translated'));
 
         return redirect()->route('admin.page.page.index');
     }

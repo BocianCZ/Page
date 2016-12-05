@@ -12,6 +12,8 @@ $router->group(['prefix' => '/page'], function (Router $router) {
     $router->get('pages/create', ['as' => 'admin.page.page.create', 'uses' => 'PageController@create']);
     $router->post('pages', ['as' => 'admin.page.page.store', 'uses' => 'PageController@store']);
     $router->get('pages/{page}/edit', ['as' => 'admin.page.page.edit', 'uses' => 'PageController@edit']);
+    $router->get('pages/{page}/translate/{language}', ['as' => 'admin.page.page.translate', 'uses' => 'PageController@translate']);
+    $router->put('pages/{page}/translate/{language}', ['as' => 'admin.page.page.updateTranslation', 'uses' => 'PageController@updateTranslation']);
     $router->put('pages/{page}/edit', ['as' => 'admin.page.page.update', 'uses' => 'PageController@update']);
     $router->delete('pages/{page}', ['as' => 'admin.page.page.destroy', 'uses' => 'PageController@destroy']);
 });

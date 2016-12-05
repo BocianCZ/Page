@@ -32,6 +32,7 @@
                             <th>{{ trans('page::pages.table.name') }}</th>
                             <th>{{ trans('page::pages.table.slug') }}</th>
                             <th>{{ trans('core::core.table.created at') }}</th>
+                            <th>{{ trans('translation::translations.title.translations') }}</th>
                             <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                         </tr>
                         </thead>
@@ -61,6 +62,14 @@
                             </td>
                             <td>
                                 <div class="btn-group">
+                                    @foreach(AllowedLanguages::getFullAllowedLanguages() as $locale => $language)
+                                        <a href="{{ URL::route('admin.page.page.translate', ['page' => $page->id, '$language' => $locale]) }}" class="btn btn-default btn-flat">{{ $locale }}</a>
+                                    @endforeach
+
+                                </div>
+                            </td>
+                            <td>
+                                <div class="btn-group">
                                     <a href="{{ URL::route('admin.page.page.edit', [$page->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
                                     <button data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.page.page.destroy', [$page->id]) }}" class="btn btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                                 </div>
@@ -75,6 +84,7 @@
                             <th>{{ trans('page::pages.table.name') }}</th>
                             <th>{{ trans('page::pages.table.slug') }}</th>
                             <th>{{ trans('core::core.table.created at') }}</th>
+                            <th>{{ trans('translation::translations.title.translations') }}</th>
                             <th>{{ trans('core::core.table.actions') }}</th>
                         </tr>
                         </tfoot>
